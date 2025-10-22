@@ -1,5 +1,5 @@
-all: automata.o dfa.o nfa.o dpda.o npda.o
-	cc -o automata automata.o dfa.o nfa.o dpda.o npda.o
+all: automata.o dfa.o nfa.o dpda.o npda.o parse.o
+	cc -o automata automata.o dfa.o nfa.o dpda.o npda.o parse.o
 	
 automata.o: src/automata.c
 	cc -o automata.o -c src/automata.c
@@ -15,3 +15,6 @@ dpda.o: src/dpda.c
 	
 npda.o: src/npda.c
 	cc -o npda.o -c src/npda.c
+	
+parse.o: src/parse.c
+	cc -o parse.o -c src/parse.c
