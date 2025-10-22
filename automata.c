@@ -1,9 +1,13 @@
 #include <stdio.h>
 
 
+struct state {
+	
+}
+
 struct transition_function {
 	char *state1;
-	char *state2:
+	char *state2;
 	char input_symbol;
 };
 
