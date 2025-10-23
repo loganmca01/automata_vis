@@ -1,7 +1,6 @@
 
 #include "./def.h"
 
-
 struct dfa {
 	
 	struct state *states;
@@ -10,7 +9,7 @@ struct dfa {
 	int num_states;
 	int num_symbols;
 	
-	struct transition_function *transition_set;
+	char *transition_set;
 	
 	/* end state info instead stored directly in state struct */
 	//struct state *start; // TODO: determine if its faster to include this extra memory here or just go through states to check for start
@@ -24,7 +23,7 @@ int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *tra
 
 int initialize_sequence(struct dfa *dfa, char *original_input, char *converted_input, char **symbol_mappings);
 
-int progress_sequence(struct dfa *dfa, int *dfa_iter, int *str_iter, char *input);
+int progress_sequence(struct dfa *dfa, char *input);
 
 
 /*
