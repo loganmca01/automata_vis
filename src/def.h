@@ -4,6 +4,7 @@
 #define START_FLAG 0
 #define END_FLAG 1
 
+//!! NOTE: for nfas, going to need to track both state and location in string for each branch
 
 struct state {
 	char name[16]; //better as strict array or pointer?
@@ -17,10 +18,11 @@ struct dfa {
 	struct state *states;
 	char *alphabet;
 	
+	// can use chars here? will that require a conversion for comparisons?
 	int num_states;
 	int num_symbols;
 	
-	char *transition_set;
+	char **transition_set;
 	
 	int start_state;
 

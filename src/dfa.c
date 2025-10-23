@@ -5,7 +5,8 @@
 #include "dfa.h"
 #include "parse.h"
 
-int dfa_iter;
+// TODO: when getting toward nfa and more computational complexity, see if using chars for iters speeds it up at all
+char dfa_iter;
 int str_iter;
 int str_size;
 
@@ -95,7 +96,15 @@ int progress_dfa_sequence(struct dfa *dfa, char *input) {
 	
 	char current = input[str_iter];
 	
+	// unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
+	dfa_iter = dfa->transition_set[dfa_iter][current];
 	
+	str_iter++;
+	
+	if (str_iter == str_size) {
+		if (dfa->states[dfa_iter].flags & END_FLAG) return 2;
+		else return 1;
+	}
 	
 }
 
