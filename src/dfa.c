@@ -8,7 +8,12 @@
 int dfa_iter;
 int str_iter;
 int str_size;
+int complete = 0;
 
+//TODO MAYBE: trackers for if memory is allocated to different things so it doesn't break trying to free something that wasn't
+// allocated on an error
+
+// TODO: decide if it's better to just exit on errors in these outermost functions or return -1 and exit in main
 int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list, char *symbol_mappings) {
 	
 	dfa = malloc(1 * sizeof(struct dfa));
@@ -24,7 +29,8 @@ int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *tra
 	
 }
 
-// NOTE: symbol mappings must be +1 of actual location, 0 must be reserved for characters not in alphabet. In practice this table will only be used here, and shouldn't impact much.
+// NOTE: symbol mappings must be +1 of actual location, 0 must be reserved for characters not in alphabet. In practice this table will
+// only be used here, and shouldn't impact much.
 int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *converted_input, char *symbol_mappings) {
 
 	str_size = strlen(original_input);
@@ -54,7 +60,10 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 	return 0;
 }
 
-
+/* TODO: need to figure out if this needs to have different return behavior than others to indicate if string is complete */
 int progress_dfa_sequence(struct dfa *dfa, char *input) {
-
+	
+	
+	
+	
 }
