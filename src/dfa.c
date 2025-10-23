@@ -85,9 +85,15 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 	return 0;
 }
 
-/* TODO: need to figure out if this needs to have different return behavior than others to indicate if string is complete */
+/* TODO: better system for returns here
+ * -1 = error
+ * 0 = success, ongoing sequence
+ * 1 = success, completed sequence denied
+ * 2 = success, completed sequence accepted
+*/
 int progress_dfa_sequence(struct dfa *dfa, char *input) {
 	
+	char current = input[str_iter];
 	
 	
 	

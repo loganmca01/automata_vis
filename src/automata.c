@@ -24,7 +24,7 @@ int main() {
 	char *converted_input;
 	initialize_dfa_sequence(dfa, input_str, converted_input, symbol_mappings);
 	
-	while(progress_dfa_sequence(dfa, converted_input) != 1) {
+	while(progress_dfa_sequence(dfa, converted_input) == 0) {
 		printf("something like this");
 	}
 	

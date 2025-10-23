@@ -18,3 +18,6 @@ npda.o: src/npda.c
 	
 parse.o: src/parse.c
 	cc -o parse.o -c src/parse.c
+	
+test: test.c
+	cc -g -gdwarf-4 -o test test.c
