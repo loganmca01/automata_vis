@@ -102,6 +102,6 @@ void free_dfa_mem(struct dfa *dfa, char *symbol_mappings, char *converted_input)
 	
 	dfa_alloc = 0;
 	symbol_alloc = 0;
-	input_alloc = 0
+	input_alloc = 0;
 
 }
