@@ -8,7 +8,7 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 
 int progress_dfa_sequence(struct dfa *dfa, char *input);
 
-int free_dfa_mem(struct dfa *dfa, char *symbol_mappings, char *converted_input);
+void free_dfa_mem(struct dfa *dfa, char *symbol_mappings, char *converted_input);
 
 
 /*
