@@ -1,11 +1,23 @@
 #include <stdio.h>
+#include "./src/def.h"
+#include <stdlib.h>
 
 int arr[4];
 
 int main(){
+	
+	struct dfa *d = malloc(1 * sizeof(struct dfa));
+	struct dfa **m = &d;
+	
+	d->start_state = 5;
+	
+	printf("%d\n", (*m)->start_state);
+	
+	free(d);
 	return 0;
+	
 }
-
+/*
 void fun1() {
 	
 	int x = 1;
@@ -37,3 +49,4 @@ void fun4() {
 	printf("%d\n", arr[x]);
 	
 }
+*/

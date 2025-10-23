@@ -20,12 +20,12 @@ int input_alloc = 0;
 // allocated on an error
 
 // TODO: decide if it's better to just exit on errors in these outermost functions or return -1 and exit in main
-int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list, char *symbol_mappings) {
+int create_dfa(struct dfa **dfa, char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list, char **symbol_mappings) {
 	
-	dfa = malloc(1 * sizeof(struct dfa));
+	*dfa = malloc(1 * sizeof(struct dfa));
 	dfa_alloc = 1;
 	
-	symbol_mappings = calloc(256, sizeof(char));
+	*symbol_mappings = calloc(256, sizeof(char));
 	symbol_alloc = 1;
 
 	if (parse_fa_states(dfa, state_list) == -1) {
@@ -55,20 +55,20 @@ int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *tra
 
 // NOTE: symbol mappings must be +1 of actual location, 0 must be reserved for characters not in alphabet. In practice this table will
 // only be used here, and shouldn't impact much.
-int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *converted_input, char *symbol_mappings) {
+int initialize_dfa_sequence(struct dfa **dfa, char *original_input, char **converted_input, char **symbol_mappings) {
 
 	str_size = strlen(original_input);
-	converted_input = malloc(str_size * sizeof(char));
+	*converted_input = malloc(str_size * sizeof(char));
 	input_alloc = 1;
 
-	dfa_iter = dfa->start_state;
+	dfa_iter = (*dfa)->start_state;
 	str_iter = 0;
 
 	char *original_mask = original_input;
-	char *converted_mask = converted_input;
+	char *converted_mask = *converted_input;
 	while (*original_mask != 0) {
 
-		char current = symbol_mappings[*original_mask]; 
+		char current = *symbol_mappings[*original_mask]; 
 
 		if (current == 0) {
 			fprintf(stderr, "invalid character in input string\n");
@@ -92,28 +92,28 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
  * 1 = success, completed sequence denied
  * 2 = success, completed sequence accepted
 */
-int progress_dfa_sequence(struct dfa *dfa, char *input) {
+int progress_dfa_sequence(struct dfa **dfa, char *input) {
 	
 	char current = input[str_iter];
 	
 	// unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
-	dfa_iter = dfa->transition_set[dfa_iter][current];
+	dfa_iter = (*dfa)->transition_set[dfa_iter][current];
 	
 	str_iter++;
 	
 	if (str_iter == str_size) {
-		if (dfa->states[dfa_iter].flags & END_FLAG) return 2;
+		if ((*dfa)->states[dfa_iter].flags & END_FLAG) return 2;
 		else return 1;
 	}
 	
 }
 
 
-void free_dfa_mem(struct dfa *dfa, char *symbol_mappings, char *converted_input) {
+void free_dfa_mem(struct dfa **dfa, char **symbol_mappings, char **converted_input) {
 	
-	if (dfa_alloc) free(dfa);
-	if (symbol_alloc) free(symbol_mappings);
-	if (input_alloc) free(converted_input);
+	if (dfa_alloc) free(*dfa);
+	if (symbol_alloc) free(*symbol_mappings);
+	if (input_alloc) free(*converted_input);
 	
 	dfa_alloc = 0;
 	symbol_alloc = 0;

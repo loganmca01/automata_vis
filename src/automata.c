@@ -18,17 +18,17 @@ int main() {
 	char *start = "s1";
 	char *end = "s3";
 	
-	create_dfa(dfa, states, alphabet, transitions, start, end, symbol_mappings);
+	create_dfa(&dfa, states, alphabet, transitions, start, end, &symbol_mappings);
 	
 	char *input_str = "01101";
 	char *converted_input;
-	initialize_dfa_sequence(dfa, input_str, converted_input, symbol_mappings);
+	initialize_dfa_sequence(&dfa, input_str, &converted_input, &symbol_mappings);
 	
-	while(progress_dfa_sequence(dfa, converted_input) == 0) {
+	while(progress_dfa_sequence(&dfa, converted_input) == 0) {
 		printf("something like this");
 	}
 	
-	free_dfa_mem(dfa, symbol_mappings, converted_input);
+	free_dfa_mem(&dfa, &symbol_mappings, &converted_input);
 	
 }
 
