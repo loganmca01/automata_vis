@@ -22,6 +22,8 @@ struct dfa {
 	
 	char *transition_set;
 	
+	int start_state;
+
 	/* end state info instead stored directly in state struct */
 	//struct state *start; // TODO: determine if its faster to include this extra memory here or just go through states to check for start
 	//char **end;

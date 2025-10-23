@@ -27,14 +27,17 @@ int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *tra
 // NOTE: symbol mappings must be +1 of actual location, 0 must be reserved for characters not in alphabet. In practice this table will only be used here, and shouldn't impact much.
 int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *converted_input, char *symbol_mappings) {
 
-	int len = strlen(original_input);
-	converted_input = malloc(len * sizeof(char));
+	str_size = strlen(original_input);
+	converted_input = malloc(str_size * sizeof(char));
+
+	dfa_iter = dfa->start_state;
+	str_iter = 0;
 
 	char *original_mask = original_input;
 	char *converted_mask = converted_input;
 	while (*original_mask != 0) {
 
-		char current = symbol_mappings[*original_mask];
+		char current = symbol_mappings[*original_mask]; 
 
 		if (current == 0) {
 			fprintf(stderr, "invalid character in input string\n");
@@ -49,4 +52,9 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 	*converted_mask = 0;
 
 	return 0;
+}
+
+
+int progress_dfa_sequence(struct dfa *dfa, char *input) {
+
 }
