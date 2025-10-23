@@ -28,23 +28,23 @@ int create_dfa(struct dfa **dfa, char *state_list, char *alphabet_list, char *tr
 	*symbol_mappings = calloc(256, sizeof(char));
 	symbol_alloc = 1;
 
-	if (parse_fa_states(dfa, state_list) == -1) {
+	if (parse_fa_states(*dfa, state_list) == -1) {
 		free_dfa_mem(dfa, symbol_mappings, NULL);
 		return -1;
 	}
-	if (parse_fa_alphabet(dfa, alphabet_list, symbol_mappings) == -1) {
+	if (parse_fa_alphabet(*dfa, alphabet_list, *symbol_mappings) == -1) {
 		free_dfa_mem(dfa, symbol_mappings, NULL);
 		return -1;
 	}
-	if (parse_fa_transitions(dfa, transition_list, symbol_mappings) == -1) {
+	if (parse_fa_transitions(*dfa, transition_list, *symbol_mappings) == -1) {
 		free_dfa_mem(dfa, symbol_mappings, NULL);
 		return -1;
 	}
-	if (parse_fa_start(dfa, start_state) == -1) {
+	if (parse_fa_start(*dfa, start_state) == -1) {
 		free_dfa_mem(dfa, symbol_mappings, NULL);
 		return -1;
 	}
-	if (parse_fa_end(dfa, end_state_list) == -1) {
+	if (parse_fa_end(*dfa, end_state_list) == -1) {
 		free_dfa_mem(dfa, symbol_mappings, NULL);
 		return -1;
 	}
@@ -55,24 +55,24 @@ int create_dfa(struct dfa **dfa, char *state_list, char *alphabet_list, char *tr
 
 // NOTE: symbol mappings must be +1 of actual location, 0 must be reserved for characters not in alphabet. In practice this table will
 // only be used here, and shouldn't impact much.
-int initialize_dfa_sequence(struct dfa **dfa, char *original_input, char **converted_input, char **symbol_mappings) {
+int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char **converted_input, char *symbol_mappings) {
 
 	str_size = strlen(original_input);
 	*converted_input = malloc(str_size * sizeof(char));
 	input_alloc = 1;
 
-	dfa_iter = (*dfa)->start_state;
+	dfa_iter = dfa->start_state;
 	str_iter = 0;
 
 	char *original_mask = original_input;
 	char *converted_mask = *converted_input;
 	while (*original_mask != 0) {
 
-		char current = *symbol_mappings[*original_mask]; 
+		char current = symbol_mappings[*original_mask]; 
 
 		if (current == 0) {
 			fprintf(stderr, "invalid character in input string\n");
-			free_dfa_mem(dfa, symbol_mappings, converted_input);
+			free_dfa_mem(&dfa, &symbol_mappings, converted_input);
 			return -1;
 		}
 
@@ -86,25 +86,28 @@ int initialize_dfa_sequence(struct dfa **dfa, char *original_input, char **conve
 	return 0;
 }
 
-/* TODO: better system for returns here
+/* 
  * -1 = error
  * 0 = success, ongoing sequence
  * 1 = success, completed sequence denied
  * 2 = success, completed sequence accepted
 */
-int progress_dfa_sequence(struct dfa **dfa, char *input) {
+int progress_dfa_sequence(struct dfa *dfa, char *input) {
+	
+	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
 	
 	char current = input[str_iter];
 	
 	// unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
-	dfa_iter = (*dfa)->transition_set[dfa_iter][current];
+	dfa_iter = dfa->transition_set[dfa_iter][current];
 	
 	str_iter++;
 	
 	if (str_iter == str_size) {
-		if ((*dfa)->states[dfa_iter].flags & END_FLAG) return 2;
+		if (dfa->states[dfa_iter].flags & END_FLAG) return 2;
 		else return 1;
 	}
+	return 0;
 	
 }
 
@@ -114,6 +117,10 @@ void free_dfa_mem(struct dfa **dfa, char **symbol_mappings, char **converted_inp
 	if (dfa_alloc) free(*dfa);
 	if (symbol_alloc) free(*symbol_mappings);
 	if (input_alloc) free(*converted_input);
+	
+	*dfa = NULL;
+	*symbol_mappings = NULL;
+	*converted_input = NULL;
 	
 	dfa_alloc = 0;
 	symbol_alloc = 0;
