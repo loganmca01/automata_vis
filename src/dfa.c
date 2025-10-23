@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "dfa.h"
 #include "parse.h"
@@ -9,7 +11,7 @@ int str_size;
 
 int create_dfa(struct dfa *dfa, char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list, char *symbol_mappings) {
 	
-	dfa = malloc(1 * sizeof(struct dfa))
+	dfa = malloc(1 * sizeof(struct dfa));
 	symbol_mappings = calloc(256, sizeof(char));
 
 	if (parse_fa_states(dfa, state_list) == -1) return -1;
@@ -30,9 +32,9 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 
 	char *original_mask = original_input;
 	char *converted_mask = converted_input;
-	while (*input_mask != 0) {
+	while (*original_mask != 0) {
 
-		char current = symbol_mappings[*input_mask];
+		char current = symbol_mappings[*original_mask];
 
 		if (current == 0) {
 			fprintf(stderr, "invalid character in input string\n");
@@ -42,7 +44,7 @@ int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char *convert
 		*converted_mask = current - 1;
 
 		converted_mask++;
-		input_mask++;
+		original_mask++;
 	}
 	*converted_mask = 0;
 
