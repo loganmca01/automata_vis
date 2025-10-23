@@ -8,6 +8,7 @@
 struct state {
 	char name[16]; //better as strict array or pointer?
 	int flags;
+	int loc;
 };
 
 #endif /* DEF */
