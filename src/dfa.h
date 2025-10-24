@@ -2,13 +2,13 @@
 #include "./def.h"
 
 /* TODO: decide whether a lot of these are gonna be globals or if we're gonna pass everytthing around */
-int create_dfa(struct dfa **dfa, char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list, char **symbol_mappings);
+int create_dfa(char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list);
 
-int initialize_dfa_sequence(struct dfa *dfa, char *original_input, char **converted_input, char *symbol_mappings);
+int initialize_dfa_sequence(char *original_input, char **converted_input);
 
-int progress_dfa_sequence(struct dfa *dfa, char *input);
+int progress_dfa_sequence(char *input);
 
-void free_dfa_mem(struct dfa **dfa, char **symbol_mappings, char **converted_input);
+void free_dfa_mem(char **converted_input);
 
 
 /*

@@ -102,8 +102,8 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_ma
             if (from_index != -1 && to_index != -1) {
                 char sym = symbol[0];  // take first char of symbol
 
-                // TODO: check that symbol is valid, need to work 
-                dfa->transition_set[from_index][symbol_mappings[sym] - 1] = to_index;
+                // TODO: check that symbol is valid, need to work on table a bit
+                dfa->transition_set[from_index][symbol_mappings[sym]] = to_index;
             } else {
                 fprintf(stderr, "Error: invalid transition '%s'\n", token);
                 return -1;
