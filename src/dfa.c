@@ -104,7 +104,7 @@ int progress_dfa_sequence(struct dfa *dfa, char *input) {
 	str_iter++;
 	
 	if (str_iter == str_size) {
-		if (dfa->states[dfa_iter].flags & END_FLAG) return 2;
+		if (dfa->states[dfa_iter].is_end == 1) return 2;
 		else return 1;
 	}
 	return 0;

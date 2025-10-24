@@ -1,14 +1,12 @@
 #ifndef DEF
 #define DEF
 
-#define START_FLAG 0
-#define END_FLAG 1
 
 //!! NOTE: for nfas, going to need to track both state and location in string for each branch
 
 struct state {
 	char name[16]; //better as strict array or pointer?
-	int flags;
+	int is_end;
 	int loc;
 };
 
