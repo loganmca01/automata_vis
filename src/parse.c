@@ -65,3 +65,48 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, char *symbol_mapping
 	return 0;
 	
 }
+
+int parse_fa_transitions(struct dfa *dfa , char *transition_list, char *symbol_mappings) {
+
+}
+
+int parse_fa_start(struct dfa *dfa , char *start_state) {
+
+    for (int i = 0; i < dfa->num_states; i++) {
+        if (strcmp(dfa->states[i].name, start_state) == 0) { //check to make sure state exists
+            dfa->start_state = i;
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+int parse_fa_end(struct dfa *dfa , char *end_state_list){ 
+
+    char *copy = strdup(end_state_list);
+
+    char *token = strtok(copy, ",");
+    int end_state_length = 0;
+    int found = 0;
+    while (token) {
+        end_state_length++;
+        for (int i = 0; i < dfa->num_states; i++) {
+            if (strcmp(dfa->states[i].name, token) == 0) {
+                dfa->states[i].is_end = 1;
+                found++;
+                break;
+            }
+        }
+        token = strtok(NULL, ",");
+
+    }
+
+    free(copy);
+
+    if (found == end_state_length) {
+        return 0;
+    }
+
+    return -1;
+}
