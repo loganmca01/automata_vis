@@ -7,7 +7,7 @@
 struct state {
 	char name[16]; //better as strict array or pointer?
 	int is_end;
-	int loc;
+	int location; //using this for array now
 };
 
 

@@ -21,9 +21,12 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
     char *token = strtok(copy, ",");
 	
 	// MAYBE: check string isn't empty/too long/same name as other here?
+    int location = 0;
     while (token != NULL && i < count) {
         strncpy(dfa->states[i].name, token, sizeof(dfa->states[i].name) - 1);
         dfa->states[i].name[sizeof(dfa->states[i].name) - 1] = '\0';
+        dfa->states[i].location = location;
+        location++;
         //fail safe needed
         i++;
         token = strtok(NULL, ",");
@@ -66,9 +69,52 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, char *symbol_mapping
 	
 }
 
-int parse_fa_transitions(struct dfa *dfa , char *transition_list, char *symbol_mappings) {
+int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_mappings) {
+    // Allocate 256x256 transition table
+    dfa->transition_set = malloc(256 * sizeof(char *));
+    for (int i = 0; i < 256; i++) {
+        dfa->transition_set[i] = malloc(256 * sizeof(char));
+        memset(dfa->transition_set[i], 0, 256); // optional: initialize to 0
+    }
 
+    // Make a copy of the input so strtok doesn’t modify the original
+    char *copy = strdup(transition_list);
+    char *token = strtok(copy, ";");
+    int i = 0;
+
+    // Each token looks like: "q0,a,q1"  (meaning from q0 on 'a' -> q1)
+    while (token != NULL) {
+        char from[64], symbol[64], to[64];
+        if (sscanf(token, "%63[^,],%63[^,],%63s", from, symbol, to) == 3) {
+            int from_index = -1;
+            int to_index = -1;
+
+            // find the state indices by name
+            for (int s = 0; s < dfa->num_states; s++) {
+                if (strcmp(dfa->states[s].name, from) == 0)
+                    from_index = s;
+                if (strcmp(dfa->states[s].name, to) == 0)
+                    to_index = s;
+            }
+
+            if (from_index != -1 && to_index != -1) {
+                unsigned char sym = symbol[0];  // take first char of symbol
+                dfa->transition_set[from_index][sym] = to_index;
+            } else {
+                fprintf(stderr, "Error: invalid transition '%s'\n", token);
+            }
+        } else {
+            fprintf(stderr, "Error parsing transition token: %s\n", token);
+        }
+
+        token = strtok(NULL, ";");
+        i++;
+    }
+
+    free(copy);
+    return 0;
 }
+
 
 int parse_fa_start(struct dfa *dfa , char *start_state) {
 
