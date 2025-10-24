@@ -70,11 +70,13 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, char *symbol_mapping
 }
 
 int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_mappings) {
-    // Allocate 256x256 transition table
-    dfa->transition_set = malloc(256 * sizeof(char *));
-    for (int i = 0; i < 256; i++) {
-        dfa->transition_set[i] = malloc(256 * sizeof(char));
-        memset(dfa->transition_set[i], 0, 256); // optional: initialize to 0
+
+    int state_size = dfa->num_states;
+    int alph_size = dfa->num_symbols;
+
+    dfa->transition_set = malloc(state_size * sizeof(char *));
+    for (int i = 0; i < state_size; i++) {
+        dfa->transition_set[i] = malloc(alph_size * sizeof(char));
     }
 
     // Make a copy of the input so strtok doesn’t modify the original
@@ -85,7 +87,7 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_ma
     // Each token looks like: "q0,a,q1"  (meaning from q0 on 'a' -> q1)
     while (token != NULL) {
         char from[64], symbol[64], to[64];
-        if (sscanf(token, "%63[^,],%63[^,],%63s", from, symbol, to) == 3) {
+        if (sscanf(token, "%63[^,],%1[^,],%63s", from, symbol, to) == 3) {
             int from_index = -1;
             int to_index = -1;
 
@@ -98,13 +100,17 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_ma
             }
 
             if (from_index != -1 && to_index != -1) {
-                unsigned char sym = symbol[0];  // take first char of symbol
-                dfa->transition_set[from_index][sym] = to_index;
+                char sym = symbol[0];  // take first char of symbol
+
+                // TODO: check that symbol is valid, need to work 
+                dfa->transition_set[from_index][symbol_mappings[sym] - 1] = to_index;
             } else {
                 fprintf(stderr, "Error: invalid transition '%s'\n", token);
+                return -1;
             }
         } else {
             fprintf(stderr, "Error parsing transition token: %s\n", token);
+            return -1;
         }
 
         token = strtok(NULL, ";");
