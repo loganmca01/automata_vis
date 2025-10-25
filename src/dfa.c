@@ -6,7 +6,7 @@
 #include "parse.h"
 
 // TODO: when getting toward nfa and more computational complexity, see if using chars for iters speeds it up at all
-char dfa_iter;
+unsigned char dfa_iter;
 int str_iter;
 int str_size;
 
@@ -15,7 +15,7 @@ int str_size;
 //int dfa_alloc = 0; TODO: more detailed booleans to track which parts of dfa have been allocated
 int input_alloc = 0;
 
-char symbol_mappings[256];
+unsigned char symbol_mappings[256];
 struct dfa dfa;
 
 //TODO MAYBE: trackers for if memory is allocated to different things so it doesn't break trying to free something that wasn't
@@ -51,7 +51,7 @@ int create_dfa(char *state_list, char *alphabet_list, char *transition_list, cha
 	
 }
 
-int initialize_dfa_sequence(char *original_input, char **converted_input) {
+int initialize_dfa_sequence(unsigned char *original_input, unsigned char **converted_input) {
 
 	str_size = strlen(original_input);
 	*converted_input = malloc(str_size * sizeof(char));
@@ -88,11 +88,10 @@ int initialize_dfa_sequence(char *original_input, char **converted_input) {
  * 1 = success, completed sequence denied
  * 2 = success, completed sequence accepted
 */
-int progress_dfa_sequence(char *input) {
+int progress_dfa_sequence(unsigned char *input) {
 	
 	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
-	
-	char current = input[str_iter];
+	unsigned char current = input[str_iter];
 	
 	// unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
 	dfa_iter = dfa.transition_set[dfa_iter][current];
@@ -108,7 +107,7 @@ int progress_dfa_sequence(char *input) {
 }
 
 
-void free_dfa_mem(char **converted_input) {
+void free_dfa_mem(unsigned char **converted_input) {
 	
 	// TODO: free elements of dfa, need to track what's been allocated, maybe different error code in parse functions for error before and after memory allocation?
 

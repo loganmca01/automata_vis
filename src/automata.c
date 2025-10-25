@@ -7,6 +7,9 @@
 #include "dpda.h"
 #include "npda.h"
 
+void print_indiv_chars(char *in);
+void remove_newline_windows_weirdness(char *str);
+
 int main(int argc, char **argv) {
 	
 	if (argc != 2) {
@@ -33,32 +36,51 @@ int main(int argc, char **argv) {
 	getline(&start, &len, f);
 	getline(&end, &len, f);
 
+	/*
 	if (states[strlen(states) - 1] == '\n' || states[strlen(states) - 1] == '\r' || states[strlen(states) - 1] == '\t') states[strlen(states) - 1] = 0;
 	if (alphabet[strlen(alphabet) - 1] == '\n' || alphabet[strlen(alphabet) - 1] == '\r' || alphabet[strlen(alphabet) - 1] == '\t') alphabet[strlen(alphabet) - 1] = 0;
 	if (transitions[strlen(transitions) - 1] == '\n' || transitions[strlen(transitions) - 1] == '\r' || transitions[strlen(transitions) - 1] == '\t') transitions[strlen(transitions) - 1] = 0;
 	if (start[strlen(start) - 1] == '\n' || start[strlen(start) - 1] == '\r' || start[strlen(start) - 1] == '\t') start[strlen(start) - 1] = 0;
 	if (end[strlen(end) - 1] == '\n' || end[strlen(end) - 1] == '\r' || end[strlen(end) - 1] == '\t') end[strlen(end) - 1] = 0;
+	*/
 
+
+	
+
+	remove_newline_windows_weirdness(states);
+	remove_newline_windows_weirdness(alphabet);
+	remove_newline_windows_weirdness(transitions);
+	remove_newline_windows_weirdness(start);
+	remove_newline_windows_weirdness(end);
+
+	/*
 	printf("%s\n", states);
+ 	print_indiv_chars(states);
 	printf("%s\n", alphabet);
+	print_indiv_chars(alphabet);
 	printf("%s\n", transitions);
+	print_indiv_chars(transitions);
 	printf("%s\n", start);
+	print_indiv_chars(start);
 	printf("%s\n", end);
-
-	printf("test\n");
-	printf("%s\n", states);
+	print_indiv_chars(end);
+	*/
 
 	if (create_dfa(states, alphabet, transitions, start, end) == -1) {
 		printf("creation error\n");
 		exit(1);
 	}
 
-	printf("test2\n");
 
+	char input_str[64];
 
-	char *input_str = "0110100010";
-	char *converted_input;
-	initialize_dfa_sequence(input_str, &converted_input);
+	printf("in: ");
+	scanf("%s", input_str);
+
+	printf("test\n");
+
+	unsigned char *converted_input;
+	initialize_dfa_sequence(&input_str[0], &converted_input);
 
 	int status;
 
@@ -81,6 +103,27 @@ int main(int argc, char **argv) {
 	
 }
 
+void print_indiv_chars(char *in) {
+
+	int len = strlen(in);
+
+	for (int i = 0; i < len; i++) {
+		printf("%d\n", in[i]);
+	}
+
+
+}
+
+void remove_newline_windows_weirdness(char *str) {
+
+	while(*str != '\0') {
+		if ((*str == '\r') || (*str == '\n')) {
+			*str = '\0';
+		}
+		str++;
+	}
+
+}
 
 /**
 
