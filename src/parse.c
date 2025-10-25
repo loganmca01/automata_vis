@@ -84,6 +84,9 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_ma
     char *token = strtok(copy, ";");
     int i = 0;
 
+    //printf("%c %d\n", dfa->alphabet[1], symbol_mappings[dfa->alphabet[1]]);
+    printf("%s %s\n", dfa->states[0].name, dfa->states[1].name);
+
     // Each token looks like: "q0,a,q1"  (meaning from q0 on 'a' -> q1)
     while (token != NULL) {
         char from[64], symbol[64], to[64];
@@ -93,10 +96,15 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_ma
 
             // find the state indices by name
             for (int s = 0; s < dfa->num_states; s++) {
+                printf("hello %s\n", dfa->states[s].name);
+
+                printf("%s %s %s %d\n", dfa->states[s].name, from, to, s);
                 if (strcmp(dfa->states[s].name, from) == 0)
+                    printf("test1\n");
                     from_index = s;
                 if (strcmp(dfa->states[s].name, to) == 0)
                     to_index = s;
+                    printf("test2\n");
             }
 
             if (from_index != -1 && to_index != -1) {
