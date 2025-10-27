@@ -6,7 +6,7 @@ int create_dfa(char *state_list, char *alphabet_list, char *transition_list, cha
 
 int initialize_dfa_sequence(char *original_input, char **converted_input);
 
-int progress_dfa_sequence(unsigned char *input);
+int progress_dfa_sequence(char *input);
 
 void free_dfa_mem(char **converted_input);
 

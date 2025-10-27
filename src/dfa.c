@@ -88,7 +88,7 @@ int initialize_dfa_sequence(char *original_input, char **converted_input) {
  * 1 = success, completed sequence denied
  * 2 = success, completed sequence accepted
 */
-int progress_dfa_sequence(unsigned char *input) {
+int progress_dfa_sequence(char *input) {
 	
 	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
 	unsigned char current = input[str_iter];

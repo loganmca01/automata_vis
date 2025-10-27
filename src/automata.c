@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
 	printf("test\n");
 
-	unsigned char *converted_input;
+	char *converted_input;
 	initialize_dfa_sequence(&argv[2][0], &converted_input);
 
 	int status;
