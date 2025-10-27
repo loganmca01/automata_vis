@@ -9,8 +9,8 @@
 */
 
 int parse_fa_states(struct dfa *dfa , char *state_list);
-int parse_fa_alphabet(struct dfa *dfa , char *alphabet_list, char *symbol_mappings);
-int parse_fa_transitions(struct dfa *dfa , char *transition_list, char *symbol_mappings);
+int parse_fa_alphabet(struct dfa *dfa , char *alphabet_list, unsigned char *symbol_mappings);
+int parse_fa_transitions(struct dfa *dfa , char *transition_list, unsigned char *symbol_mappings);
 int parse_fa_start(struct dfa *dfa , char *start_state);
 int parse_fa_end(struct dfa *dfa , char *end_state_list);
 

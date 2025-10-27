@@ -46,12 +46,12 @@ int create_dfa(char *state_list, char *alphabet_list, char *transition_list, cha
 	if (parse_fa_end(&dfa, end_state_list) == -1) {
 		return -1;
 	}
-	
+	// test
 	return 0;
 	
 }
 
-int initialize_dfa_sequence(unsigned char *original_input, unsigned char **converted_input) {
+int initialize_dfa_sequence(char *original_input, char **converted_input) {
 
 	str_size = strlen(original_input);
 	*converted_input = malloc(str_size * sizeof(char));
@@ -64,7 +64,7 @@ int initialize_dfa_sequence(unsigned char *original_input, unsigned char **conve
 	char *converted_mask = *converted_input;
 	while (*original_mask != 0) {
 
-		char tmp = symbol_mappings[*original_mask]; 
+		unsigned char tmp = symbol_mappings[*original_mask]; 
 
 		if (tmp == 255) {
 			fprintf(stderr, "invalid character in input string\n");
@@ -107,7 +107,7 @@ int progress_dfa_sequence(unsigned char *input) {
 }
 
 
-void free_dfa_mem(unsigned char **converted_input) {
+void free_dfa_mem(char **converted_input) {
 	
 	// TODO: free elements of dfa, need to track what's been allocated, maybe different error code in parse functions for error before and after memory allocation?
 

@@ -12,7 +12,7 @@ void remove_newline_windows_weirdness(char *str);
 
 int main(int argc, char **argv) {
 	
-	if (argc != 2) {
+	if (argc != 3) {
 		printf("error, need cmd line arg file name\n");
 		exit(1);
 	}
@@ -71,16 +71,10 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
-
-	char input_str[64];
-
-	printf("in: ");
-	scanf("%s", input_str);
-
 	printf("test\n");
 
 	unsigned char *converted_input;
-	initialize_dfa_sequence(&input_str[0], &converted_input);
+	initialize_dfa_sequence(&argv[2][0], &converted_input);
 
 	int status;
 

@@ -36,7 +36,7 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
     return 0;
 }
 
-int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, char *symbol_mappings) {
+int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbol_mappings) {
 	
 	char *copy = strdup(alphabet_list);
 	
@@ -69,7 +69,7 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, char *symbol_mapping
 	
 }
 
-int parse_fa_transitions(struct dfa *dfa, char *transition_list, char *symbol_mappings) {
+int parse_fa_transitions(struct dfa *dfa, char *transition_list, unsigned char *symbol_mappings) {
 
     int state_size = dfa->num_states;
     int alph_size = dfa->num_symbols;
