@@ -15,6 +15,8 @@ int str_size;
 //int dfa_alloc = 0; TODO: more detailed booleans to track which parts of dfa have been allocated
 int input_alloc = 0;
 
+int dfa_alloc_track = 0;
+
 unsigned char symbol_mappings[256];
 struct dfa dfa;
 
@@ -32,21 +34,31 @@ int create_dfa(char *state_list, char *alphabet_list, char *transition_list, cha
 	//symbol_alloc = 1;
 
 	if (parse_fa_states(&dfa, state_list) == -1) {
+		free_dfa_mem(NULL);
 		return -1;
 	}
 	if (parse_fa_alphabet(&dfa, alphabet_list, &symbol_mappings[0]) == -1) {
+		dfa_alloc_track = 1;
+		free_dfa_mem(NULL);
 		return -1;
 	}
 	if (parse_fa_transitions(&dfa, transition_list, &symbol_mappings[0]) == -1) {
+		dfa_alloc_track = 2;
+		free_dfa_mem(NULL);
 		return -1;
 	}
 	if (parse_fa_start(&dfa, start_state) == -1) {
+		dfa_alloc_track = 3;
+		free_dfa_mem(NULL);
 		return -1;
 	}
 	if (parse_fa_end(&dfa, end_state_list) == -1) {
+		dfa_alloc_track = 4;
+		free_dfa_mem(NULL);
 		return -1;
 	}
-	// test
+	
+	dfa_alloc_track = 5;
 	return 0;
 	
 }
@@ -109,7 +121,18 @@ int progress_dfa_sequence(char *input) {
 
 void free_dfa_mem(char **converted_input) {
 	
-	// TODO: free elements of dfa, need to track what's been allocated, maybe different error code in parse functions for error before and after memory allocation?
+	if (dfa_alloc_track == 1) {
+		free(dfa.states);
+	}
+	else if (dfa_alloc_track == 2) {
+		free(dfa.states);
+		free(dfa.alphabet);
+	}
+	else if (dfa_alloc_track >= 3) {
+		free(dfa.states);
+		free(dfa.alphabet);
+		free(dfa.transition_set);
+	}
 
 	if (input_alloc) free(*converted_input);
 	

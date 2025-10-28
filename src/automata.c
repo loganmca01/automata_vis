@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
 	int status;
 
 	while((status = progress_dfa_sequence(converted_input)) == 0) {
-		printf("ongoing\n");
+		continue;
 	}
 
 	printf("%d\n", status);

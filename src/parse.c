@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h> //reminder to figure out if here or header or not needed becuase it's in main
 
+// NOTE: I was trying to figure out the best way to track what memory is allocated so we don't have errors freeing stuff that
+// wasn't malloced, decided the best was is for each of these functions to just free the memory they've allocated if they fail and
+// made it so that happens.
+
 int parse_fa_states(struct dfa *dfa, char *state_list) {
     char *copy = strdup(state_list);
     //add check if copy fails?
@@ -107,10 +111,14 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, unsigned char *
                 dfa->transition_set[from_index][symbol_mappings[sym]] = to_index;
             } else {
                 fprintf(stderr, "Error: invalid transition '%s'\n", token);
+				free(copy);
+				free(dfa->transition_set);
                 return -1;
             }
         } else {
             fprintf(stderr, "Error parsing transition token: %s\n", token);
+			free(copy);
+			free(dfa->transition_set);
             return -1;
         }
 
