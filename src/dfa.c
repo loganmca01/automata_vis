@@ -10,20 +10,13 @@ unsigned char dfa_iter;
 int str_iter;
 int str_size;
 
-// booleans
-//int complete = 0;
-//int dfa_alloc = 0; TODO: more detailed booleans to track which parts of dfa have been allocated
+// memory allocation trackers
 int input_alloc = 0;
-
 int dfa_alloc_track = 0;
 
 unsigned char symbol_mappings[256];
 struct dfa dfa;
 
-//TODO MAYBE: trackers for if memory is allocated to different things so it doesn't break trying to free something that wasn't
-// allocated on an error
-
-// TODO: decide if it's better to just exit on errors in these outermost functions or return -1 and exit in main
 int create_dfa(char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list) {
 	
 	//*dfa = malloc(1 * sizeof(struct dfa));
@@ -99,13 +92,13 @@ int initialize_dfa_sequence(char *original_input, char **converted_input) {
  * 0 = success, ongoing sequence
  * 1 = success, completed sequence denied
  * 2 = success, completed sequence accepted
-*/
+ */
 int progress_dfa_sequence(char *input) {
 	
 	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
 	unsigned char current = input[str_iter];
 	
-	// unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
+	// TODO: unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
 	dfa_iter = dfa.transition_set[dfa_iter][current];
 	
 	str_iter++;
