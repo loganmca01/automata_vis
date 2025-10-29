@@ -1,6 +1,15 @@
 #ifndef DEF
 #define DEF
 
+// macros for dfa logging
+#define DFA_LOG_START_STATE 0xff
+#define DFA_LOG_END_STATE 0xff00
+#define DFA_LOG_SYMBOL 0xff0000
+
+#define GET_DFA_LOG_START_STATE(x) ((unsigned char)((x) & (0xff)))
+#define GET_DFA_LOG_END_STATE(x) ((unsigned char)((x) & (0xff00) >> 8))
+#define GET_DFA_LOG_SYMBOL(x) ((unsigned char)((x) & (0xff0000) >> 16))
+
 
 //!! NOTE: for nfas, going to need to track both state and location in string for each branch
 

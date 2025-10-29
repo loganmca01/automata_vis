@@ -5,13 +5,17 @@
 #include "dfa.h"
 #include "parse.h"
 
+
 // TODO: when getting toward nfa and more computational complexity, see if using chars for iters speeds it up at all
 unsigned char dfa_iter;
 int str_iter;
 int str_size;
 
+int *log_arr;
+
 // memory allocation trackers
 int input_alloc = 0;
+int log_alloc = 0;
 int dfa_alloc_track = 0;
 
 unsigned char symbol_mappings[256];
@@ -83,7 +87,10 @@ int initialize_dfa_sequence(char *original_input, char **converted_input) {
 		original_mask++;
 	}
 	*converted_mask = 0;
-
+	
+	log_arr = malloc(str_size * sizeof(int32_t));
+	log_alloc = 1;
+		
 	return 0;
 }
 
@@ -97,11 +104,14 @@ int progress_dfa_sequence(char *input) {
 	
 	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
 	unsigned char current = input[str_iter];
+	unsigned char old_state = dfa_iter;
 	
 	// TODO: unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
 	dfa_iter = dfa.transition_set[dfa_iter][current];
 	
 	str_iter++;
+	
+	log_dfa(old_state, current);
 	
 	if (str_iter == str_size) {
 		if (dfa.states[dfa_iter].is_end == 1) return 2;
@@ -111,6 +121,15 @@ int progress_dfa_sequence(char *input) {
 	
 }
 
+void log_dfa(unsigned char sym, unsigned char old) {
+	
+	
+	
+}
+
+void print_log() {
+	
+}
 
 void free_dfa_mem(char **converted_input) {
 	
@@ -128,9 +147,12 @@ void free_dfa_mem(char **converted_input) {
 	}
 
 	if (input_alloc) free(*converted_input);
+	if (log_alloc) free(log_arr);
 	
+	log_arr = NULL;
 	*converted_input = NULL;
 	
 	input_alloc = 0;
+	log_alloc = 0;
 
 }

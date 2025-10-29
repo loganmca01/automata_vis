@@ -9,7 +9,9 @@ int progress_dfa_sequence(char *input);
 
 void free_dfa_mem(char **converted_input);
 
+void log_dfa(unsigned char sym, unsigned char old);
 
+void print_log();
 /*
 
 transition set is |states| x |symbols|
