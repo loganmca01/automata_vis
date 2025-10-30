@@ -7,8 +7,8 @@
 #define DFA_LOG_SYMBOL 0xff0000
 
 #define GET_DFA_LOG_START_STATE(x) ((unsigned char)((x) & (0xff)))
-#define GET_DFA_LOG_END_STATE(x) ((unsigned char)((x) & (0xff00) >> 8))
-#define GET_DFA_LOG_SYMBOL(x) ((unsigned char)((x) & (0xff0000) >> 16))
+#define GET_DFA_LOG_END_STATE(x) ((unsigned char)(((x) & (0xff00)) >> 8))
+#define GET_DFA_LOG_SYMBOL(x) ((unsigned char)(((x) & (0xff0000)) >> 16))
 
 #define SET_DFA_LOG_START_STATE(l, x) (l = ((l) | ((int)(x))))
 #define SET_DFA_LOG_END_STATE(l, x) (l = ((l) | ((int)(x) << 8)))

@@ -123,14 +123,10 @@ int progress_dfa_sequence(char *input) {
 
 void log_dfa(unsigned char sym, unsigned char old) {
 	
-	printf("%d\n", dfa_iter);
-	
 	log_arr[str_iter] = 0;
 	SET_DFA_LOG_START_STATE(log_arr[str_iter], old);
 	SET_DFA_LOG_END_STATE(log_arr[str_iter], dfa_iter);
 	SET_DFA_LOG_SYMBOL(log_arr[str_iter], sym);
-	
-	printf("%d\n", log_arr[str_iter] & 0xff00 >> 8);
 	
 }
 
@@ -144,8 +140,6 @@ void print_dfa_log() {
 		unsigned char start = GET_DFA_LOG_START_STATE(current_log);
 		unsigned char end = GET_DFA_LOG_END_STATE(current_log);
 		unsigned char sym = GET_DFA_LOG_SYMBOL(current_log);
-		
-		printf("%d %s\n", end, dfa.states[end].name);
 		
 		printf("MOVE %d: %s + %c -> %s\n", i, dfa.states[start].name, dfa.alphabet[sym], dfa.states[end].name);
 	}
