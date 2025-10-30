@@ -4,7 +4,7 @@
 
 #include "dfa.h"
 #include "parse.h"
-
+#include "./def.h"
 
 // TODO: when getting toward nfa and more computational complexity, see if using chars for iters speeds it up at all
 unsigned char dfa_iter;
@@ -123,11 +123,23 @@ int progress_dfa_sequence(char *input) {
 
 void log_dfa(unsigned char sym, unsigned char old) {
 	
-	
+	log_arr[str_iter] = 0;
+	SET_DFA_LOG_START_STATE(log_arr[str_iter], old);
+	SET_DFA_LOG_END_STATE(log_arr[str_iter], dfa_iter);
+	SET_DFA_LOG_SYMBOL(log_arr[str_iter], sym);
 	
 }
 
-void print_log() {
+void print_dfa_log() {
+	
+	for (int i = 0; i < str_size; i++) {
+		int current_log = log_arr[i];
+		unsigned char start = GET_DFA_LOG_START_STATE(current_log);
+		unsigned char end = GET_DFA_LOG_END_STATE(current_log);
+		unsigned char sym = GET_DFA_LOG_SYMBOL(current_log);
+		
+		printf("MOVE %d: %s + %c -> %s\n", i, dfa.states[start].name, dfa.alphabet[sym], dfa.states[end].name);
+	}
 	
 }
 

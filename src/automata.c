@@ -12,9 +12,18 @@ void remove_newline_windows_weirdness(char *str);
 
 int main(int argc, char **argv) {
 	
-	//printf("%d %d %d", DFA_LOG_START_STATE, DFA_LOG_END_STATE, DFA_LOG_SYMBOL);
+	/*
+	unsigned char t = 255;
 	
-	if (argc != 3) {
+	printf("%d %d %d", DFA_LOG_START_STATE, DFA_LOG_END_STATE, DFA_LOG_SYMBOL);
+	int test = 0;
+	SET_DFA_LOG_START_STATE(test, t);
+	SET_DFA_LOG_END_STATE(test, t);
+	SET_DFA_LOG_SYMBOL(test, t);
+	printf("%d\n", test);
+	*/
+	
+	if (argc != 4) {
 		printf("error, need cmd line arg file name\n");
 		exit(1);
 	}
@@ -85,6 +94,10 @@ int main(int argc, char **argv) {
 	}
 
 	printf("%d\n", status);
+	
+	if (argv[3][0] == '1') {
+		print_dfa_log();
+	}
 	
 	free_dfa_mem(&converted_input);
 

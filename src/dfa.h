@@ -1,6 +1,4 @@
 
-#include "./def.h"
-
 int create_dfa(char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list);
 
 int initialize_dfa_sequence(char *original_input, char **converted_input);
@@ -11,7 +9,7 @@ void free_dfa_mem(char **converted_input);
 
 void log_dfa(unsigned char sym, unsigned char old);
 
-void print_log();
+void print_dfa_log();
 /*
 
 transition set is |states| x |symbols|

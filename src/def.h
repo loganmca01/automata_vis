@@ -10,6 +10,10 @@
 #define GET_DFA_LOG_END_STATE(x) ((unsigned char)((x) & (0xff00) >> 8))
 #define GET_DFA_LOG_SYMBOL(x) ((unsigned char)((x) & (0xff0000) >> 16))
 
+#define SET_DFA_LOG_START_STATE(l, x) (l = ((l) | ((int)(x))))
+#define SET_DFA_LOG_END_STATE(l, x) (l = ((l) | ((int)(x) << 8)))
+#define SET_DFA_LOG_SYMBOL(l, x) (l = ((l) | ((int)(x) << 16)))
+
 
 //!! NOTE: for nfas, going to need to track both state and location in string for each branch
 
