@@ -109,9 +109,9 @@ int progress_dfa_sequence(char *input) {
 	// TODO: unsure if we need to check for validity here, if all went right in parsing it shouldn't be possible to have an invalid state change
 	dfa_iter = dfa.transition_set[dfa_iter][current];
 	
-	str_iter++;
+	log_dfa(current, old_state);
 	
-	log_dfa(old_state, current);
+	str_iter++;
 	
 	if (str_iter == str_size) {
 		if (dfa.states[dfa_iter].is_end == 1) return 2;
@@ -123,10 +123,14 @@ int progress_dfa_sequence(char *input) {
 
 void log_dfa(unsigned char sym, unsigned char old) {
 	
+	printf("%d\n", dfa_iter);
+	
 	log_arr[str_iter] = 0;
 	SET_DFA_LOG_START_STATE(log_arr[str_iter], old);
 	SET_DFA_LOG_END_STATE(log_arr[str_iter], dfa_iter);
 	SET_DFA_LOG_SYMBOL(log_arr[str_iter], sym);
+	
+	printf("%d\n", log_arr[str_iter] & 0xff00 >> 8);
 	
 }
 
@@ -134,9 +138,14 @@ void print_dfa_log() {
 	
 	for (int i = 0; i < str_size; i++) {
 		int current_log = log_arr[i];
+		
+		//printf("%d\n", current_log);
+		
 		unsigned char start = GET_DFA_LOG_START_STATE(current_log);
 		unsigned char end = GET_DFA_LOG_END_STATE(current_log);
 		unsigned char sym = GET_DFA_LOG_SYMBOL(current_log);
+		
+		printf("%d %s\n", end, dfa.states[end].name);
 		
 		printf("MOVE %d: %s + %c -> %s\n", i, dfa.states[start].name, dfa.alphabet[sym], dfa.states[end].name);
 	}

@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 	while((status = progress_dfa_sequence(converted_input)) == 0) {
 		continue;
 	}
-
+	if (status == 1)
 	printf("%d\n", status);
 	
 	if (argv[3][0] == '1') {
