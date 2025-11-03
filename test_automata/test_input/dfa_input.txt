@@ -1,0 +1,4 @@
+./test_automata/test_dfa/abc.dfa aabbccacab denied
+./test_automata/test_dfa/abc.dfa aabbccacabc accepted
+./test_automata/test_dfa/abc.dfa abc accepted
+./test_automata/test_dfa/abc.dfa ac denied

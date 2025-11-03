@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
 
 	FILE *f = fopen(argv[1], "r");
 	if (f == 0) {
+		printf("%s\n", argv[1]);
 		printf("error opening file\n");
 		exit(1);
 	}
@@ -81,8 +82,6 @@ int main(int argc, char **argv) {
 		printf("creation error\n");
 		exit(1);
 	}
-
-	printf("test\n");
 
 	char *converted_input;
 	initialize_dfa_sequence(&argv[2][0], &converted_input);
