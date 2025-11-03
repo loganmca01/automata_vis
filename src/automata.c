@@ -92,8 +92,13 @@ int main(int argc, char **argv) {
 	while((status = progress_dfa_sequence(converted_input)) == 0) {
 		continue;
 	}
-	if (status == 1)
-	printf("%d\n", status);
+	if (status == 1) {
+		printf("denied\n");
+	}
+	else if (status == 2) {
+		printf("accepted\n");
+	}
+	//printf("%d\n", status);
 	
 	if (argv[3][0] == '1') {
 		print_dfa_log();
