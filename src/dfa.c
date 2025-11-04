@@ -22,13 +22,8 @@ unsigned char symbol_mappings[256];
 struct dfa dfa;
 
 int create_dfa(char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list) {
-	
-	//*dfa = malloc(1 * sizeof(struct dfa));
-	//dfa_alloc = 1;
-	
-	//*symbol_mappings = malloc(256, sizeof(char));
+
 	memset(&symbol_mappings, 255, 256);
-	//symbol_alloc = 1;
 
 	if (parse_fa_states(&dfa, state_list) == -1) {
 		free_dfa_mem(NULL);
@@ -102,7 +97,6 @@ int initialize_dfa_sequence(char *original_input, char **converted_input) {
  */
 int progress_dfa_sequence(char *input) {
 	
-	// TODO: logging system, track path DFA took (useful for testing dfa's, 100% necessary for nfa's so might as well implement here too)
 	unsigned char current = input[str_iter];
 	unsigned char old_state = dfa_iter;
 	
@@ -134,8 +128,6 @@ void print_dfa_log() {
 	
 	for (int i = 0; i < str_size; i++) {
 		int current_log = log_arr[i];
-		
-		//printf("%d\n", current_log);
 		
 		unsigned char start = GET_DFA_LOG_START_STATE(current_log);
 		unsigned char end = GET_DFA_LOG_END_STATE(current_log);

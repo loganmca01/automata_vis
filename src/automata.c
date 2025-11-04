@@ -12,17 +12,6 @@ void remove_newline_windows_weirdness(char *str);
 
 int main(int argc, char **argv) {
 	
-	/*
-	unsigned char t = 255;
-	
-	printf("%d %d %d", DFA_LOG_START_STATE, DFA_LOG_END_STATE, DFA_LOG_SYMBOL);
-	int test = 0;
-	SET_DFA_LOG_START_STATE(test, t);
-	SET_DFA_LOG_END_STATE(test, t);
-	SET_DFA_LOG_SYMBOL(test, t);
-	printf("%d\n", test);
-	*/
-	
 	if (argc != 4) {
 		printf("error, need cmd line arg file name\n");
 		exit(1);
@@ -48,35 +37,11 @@ int main(int argc, char **argv) {
 	getline(&start, &len, f);
 	getline(&end, &len, f);
 
-	/*
-	if (states[strlen(states) - 1] == '\n' || states[strlen(states) - 1] == '\r' || states[strlen(states) - 1] == '\t') states[strlen(states) - 1] = 0;
-	if (alphabet[strlen(alphabet) - 1] == '\n' || alphabet[strlen(alphabet) - 1] == '\r' || alphabet[strlen(alphabet) - 1] == '\t') alphabet[strlen(alphabet) - 1] = 0;
-	if (transitions[strlen(transitions) - 1] == '\n' || transitions[strlen(transitions) - 1] == '\r' || transitions[strlen(transitions) - 1] == '\t') transitions[strlen(transitions) - 1] = 0;
-	if (start[strlen(start) - 1] == '\n' || start[strlen(start) - 1] == '\r' || start[strlen(start) - 1] == '\t') start[strlen(start) - 1] = 0;
-	if (end[strlen(end) - 1] == '\n' || end[strlen(end) - 1] == '\r' || end[strlen(end) - 1] == '\t') end[strlen(end) - 1] = 0;
-	*/
-
-
-	
-
 	remove_newline_windows_weirdness(states);
 	remove_newline_windows_weirdness(alphabet);
 	remove_newline_windows_weirdness(transitions);
 	remove_newline_windows_weirdness(start);
 	remove_newline_windows_weirdness(end);
-
-	/*
-	printf("%s\n", states);
- 	print_indiv_chars(states);
-	printf("%s\n", alphabet);
-	print_indiv_chars(alphabet);
-	printf("%s\n", transitions);
-	print_indiv_chars(transitions);
-	printf("%s\n", start);
-	print_indiv_chars(start);
-	printf("%s\n", end);
-	print_indiv_chars(end);
-	*/
 
 	if (create_dfa(states, alphabet, transitions, start, end) == -1) {
 		printf("creation error\n");
@@ -97,7 +62,6 @@ int main(int argc, char **argv) {
 	else if (status == 2) {
 		printf("accepted\n");
 	}
-	//printf("%d\n", status);
 	
 	if (argv[3][0] == '1') {
 		print_dfa_log();
@@ -138,10 +102,3 @@ void remove_newline_windows_weirdness(char *str) {
 
 }
 
-/**
-
-create_{name}
-delete_{name}
-
-
-**/
