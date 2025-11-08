@@ -21,3 +21,6 @@ parse.o: src/parse.c
 	
 test: test.c
 	cc -g -gdwarf-4 -o test test.c
+	
+wasm: 
+	emcc -o ./frontend/automata.html ./src/dfa.c ./src/nfa.c ./src/dpda.c ./src/npda.c ./src/parse.c

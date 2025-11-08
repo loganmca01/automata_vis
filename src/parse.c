@@ -75,7 +75,7 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
             return -1;
         }
         for (int j = 0; j < i; j++) { //replace with hashmap
-            if (strcmp(dfa->alphabet[i], token) == 0) {
+            if (dfa->alphabet[i] == token[0]) {
                 printf("Duplicate input symbol");
                 free(copy);
                 return -1;
