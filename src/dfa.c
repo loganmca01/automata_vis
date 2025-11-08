@@ -150,6 +150,9 @@ void free_dfa_mem(char **converted_input) {
 	else if (dfa_alloc_track >= 3) {
 		free(dfa.states);
 		free(dfa.alphabet);
+		for (int i = 0; i < dfa.num_states; i++) {
+			free(dfa.transition_set[i]);
+		}
 		free(dfa.transition_set);
 	}
 

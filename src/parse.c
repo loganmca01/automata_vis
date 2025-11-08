@@ -12,7 +12,12 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
     //add check if copy fails?
 
     int count = 1; 
-    if (!copy[0]) return -1; //prevents zero states
+    if (!copy[0]) {
+        free(copy);
+        fprintf(stderr, "Error: No valid end states possible\n");
+        return -1;
+    }; //prevents zero states
+
     for (int i = 0; copy[i]; i++) {
         if (copy[i] == ',') count++;
     }
@@ -28,13 +33,12 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
 	// MAYBE: check string isn't empty/too long/same name as other here?
     int location = 0;
 
-
-
     while (token != NULL && i < count) {
         for (int j = 0; j < i; j++) { //O(n^2) for the love of god replace this with a hashmap 
             if (strcmp(dfa->states[j].name, token) == 0) {
-                printf("Duplicate state name");
+                fprintf(stderr, "Duplicate state name %s\n", token);
                 free(copy);
+                free(dfa->states);
                 return -1;
             }
         }
@@ -72,12 +76,14 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
     while (token != NULL && i < count) {
         if (strlen(token) != 1) {
             free(copy);
+            free(dfa->alphabet);
             return -1;
         }
         for (int j = 0; j < i; j++) { //replace with hashmap
-            if (dfa->alphabet[i] == token[0]) {
-                printf("Duplicate input symbol");
+            if (dfa->alphabet[j] == token[0]) {
+                fprintf(stderr, "Duplicate input symbol %c\n", token);
                 free(copy);
+                free(dfa->alphabet);
                 return -1;
             }
         }
@@ -128,21 +134,35 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, unsigned char *
             if (from_index != -1 && to_index != -1) {
                 char sym = symbol[0];  // take first char of symbol
                 int mapped = symbol_mappings[sym];
-                if (symbol_mappings[sym] == 255) {
-                    fprintf(stderr, "Invalid character in transition function\n");
+                if (mapped == 255) {
+                    fprintf(stderr, "Error: Invalid character in transition function %c\n", sym);
                     free(copy);
+                    for (int s = 0; s < state_size; s++) {
+                        free(dfa->transition_set[s]);
+                    }
+                    free(dfa->transition_set);                    
                     return -1;
                 }
                 dfa->transition_set[from_index][mapped] = to_index;
             } else {
                 fprintf(stderr, "Error: invalid transition '%s'\n", token);
 				free(copy);
+                for (int s = 0; s < state_size; s++) {
+                    free(dfa->transition_set[s]);
+                }
+                free(dfa->transition_set);
+                
 				free(dfa->transition_set);
                 return -1;
             }
         } else {
             fprintf(stderr, "Error parsing transition token: %s\n", token);
 			free(copy);
+            for (int s = 0; s < state_size; s++) {
+                free(dfa->transition_set[s]);
+            }
+            free(dfa->transition_set);
+            
 			free(dfa->transition_set);
             return -1;
         }
@@ -165,6 +185,7 @@ int parse_fa_start(struct dfa *dfa , char *start_state) {
         }
     }
 
+    fprintf(stderr, "Invalid start state\n"); 
     return -1;
 }
 
@@ -173,27 +194,23 @@ int parse_fa_end(struct dfa *dfa , char *end_state_list){
     char *copy = strdup(end_state_list);
 
     char *token = strtok(copy, ",");
-    int end_state_length = 0;
-    int found = 0;
     while (token) { 
-        end_state_length++;
         for (int i = 0; i < dfa->num_states; i++) {
             if (strcmp(dfa->states[i].name, token) == 0) {
                 dfa->states[i].is_end = 1;
-                found++;
                 break;
             }
+            if (i == dfa->num_states - 1) {
+                free(copy);
+                fprintf(stderr, "Error: Invalid endstate %s\n", token);
+                return -1;
+            }
         }
-
         token = strtok(NULL, ",");
 
     }
 
     free(copy);
 
-    if (found == end_state_length) {
-        return 0;
-    }
-
-    return -1;
+    return 0;
 }
