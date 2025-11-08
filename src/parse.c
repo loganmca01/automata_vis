@@ -11,7 +11,8 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
     char *copy = strdup(state_list);
     //add check if copy fails?
 
-    int count = 1; //starts at one becuase state = "q1". Means that should prob make it so you cant have zero states
+    int count = 1; 
+    if (!copy[0]) return -1; //prevents zero states
     for (int i = 0; copy[i]; i++) {
         if (copy[i] == ',') count++;
     }
@@ -26,7 +27,16 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
 	
 	// MAYBE: check string isn't empty/too long/same name as other here?
     int location = 0;
+
+
+
     while (token != NULL && i < count) {
+        for (int j = 0; j < i; j++) { //O(n^2) for the love of god replace this with a hashmap 
+            if (strcmp(dfa->states[j].name, token) == 0) {
+                printf("Duplicate");
+                return -1;
+            }
+        }
         strncpy(dfa->states[i].name, token, sizeof(dfa->states[i].name) - 1);
         dfa->states[i].name[sizeof(dfa->states[i].name) - 1] = '\0';
         dfa->states[i].location = location;
@@ -44,7 +54,8 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
 	
 	char *copy = strdup(alphabet_list);
 	
-    int count = 1; //starts at one becuase state = "q1". Means that should prob make it so you cant have zero states
+    int count = 1; 
+    if (!copy[0]) count = 0;
     for (int i = 0; copy[i]; i++) {
         if (copy[i] == ',') count++;
     }
@@ -58,7 +69,12 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
 	// MAYBE: check string isn't empty/too long/same name as other here?
 	// need to only have single character strings here
     while (token != NULL && i < count) {
-        
+        for (int j = 0; j < i; j++) { //replace with hashmap
+            if (strcmp(dfa->alphabet[i], token) == 0) {
+                printf("Duplicate input symbol");
+                return -1;
+            }
+        }
 		char sym = token[0];
         dfa->alphabet[i] = sym;
 		symbol_mappings[sym] = i;
