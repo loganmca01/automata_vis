@@ -33,7 +33,8 @@ int parse_fa_states(struct dfa *dfa, char *state_list) {
     while (token != NULL && i < count) {
         for (int j = 0; j < i; j++) { //O(n^2) for the love of god replace this with a hashmap 
             if (strcmp(dfa->states[j].name, token) == 0) {
-                printf("Duplicate");
+                printf("Duplicate state name");
+                free(copy);
                 return -1;
             }
         }
@@ -69,9 +70,14 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
 	// MAYBE: check string isn't empty/too long/same name as other here?
 	// need to only have single character strings here
     while (token != NULL && i < count) {
+        if (strlen(token) != 1) {
+            free(copy);
+            return -1;
+        }
         for (int j = 0; j < i; j++) { //replace with hashmap
             if (strcmp(dfa->alphabet[i], token) == 0) {
                 printf("Duplicate input symbol");
+                free(copy);
                 return -1;
             }
         }
@@ -99,14 +105,13 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, unsigned char *
         dfa->transition_set[i] = malloc(alph_size * sizeof(char));
     }
 
-    // Make a copy of the input so strtok doesn’t modify the original
     char *copy = strdup(transition_list);
     char *token = strtok(copy, ";");
     int i = 0;
 
     // Each token looks like: "q0,a,q1"  (meaning from q0 on 'a' -> q1)
     while (token != NULL) {
-        char from[64], symbol[64], to[64];
+        char from[64], symbol[2], to[64];
         if (sscanf(token, "%63[^,],%1[^,],%63s", from, symbol, to) == 3) {
             int from_index = -1;
             int to_index = -1;
@@ -122,9 +127,13 @@ int parse_fa_transitions(struct dfa *dfa, char *transition_list, unsigned char *
 
             if (from_index != -1 && to_index != -1) {
                 char sym = symbol[0];  // take first char of symbol
-
-                // TODO: check that symbol is valid, need to work on table a bit
-                dfa->transition_set[from_index][symbol_mappings[sym]] = to_index;
+                int mapped = symbol_mappings[sym];
+                if (symbol_mappings[sym] == 255) {
+                    fprintf(stderr, "Invalid character in transition function\n");
+                    free(copy);
+                    return -1;
+                }
+                dfa->transition_set[from_index][mapped] = to_index;
             } else {
                 fprintf(stderr, "Error: invalid transition '%s'\n", token);
 				free(copy);
@@ -166,7 +175,7 @@ int parse_fa_end(struct dfa *dfa , char *end_state_list){
     char *token = strtok(copy, ",");
     int end_state_length = 0;
     int found = 0;
-    while (token) {
+    while (token) { 
         end_state_length++;
         for (int i = 0; i < dfa->num_states; i++) {
             if (strcmp(dfa->states[i].name, token) == 0) {
@@ -175,6 +184,7 @@ int parse_fa_end(struct dfa *dfa , char *end_state_list){
                 break;
             }
         }
+
         token = strtok(NULL, ",");
 
     }
