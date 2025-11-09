@@ -24,7 +24,6 @@ struct dfa dfa;
 int create_dfa(char *state_list, char *alphabet_list, char *transition_list, char *start_state, char *end_state_list) {
 
 	memset(&symbol_mappings, 255, 256);
-
 	if (parse_fa_states(&dfa, state_list) == -1) {
 		free_dfa_mem(NULL);
 		return -1;
@@ -155,14 +154,12 @@ void free_dfa_mem(char **converted_input) {
 		}
 		free(dfa.transition_set);
 	}
-
-	if (input_alloc) free(*converted_input);
+	if (converted_input && *converted_input) {
+		free(*converted_input);
+		*converted_input = NULL;
+	}
 	if (log_alloc) free(log_arr);
-	
 	log_arr = NULL;
-	*converted_input = NULL;
-	
 	input_alloc = 0;
 	log_alloc = 0;
-
 }

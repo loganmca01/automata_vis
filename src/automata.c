@@ -31,11 +31,15 @@ int main(int argc, char **argv) {
 	char *end = NULL;
 	size_t len = 64;
 
-	getline(&states, &len, f);
-	getline(&alphabet, &len, f);
-	getline(&transitions, &len, f);
-	getline(&start, &len, f);
-	getline(&end, &len, f);
+	if (getline(&states, &len, f) == -1 ||
+		getline(&alphabet, &len, f) == -1 ||
+		getline(&transitions, &len, f) == -1 ||
+		getline(&start, &len, f) == -1 ||
+		getline(&end, &len, f) == -1) {
+			fprintf(stderr, "Error: file missing lines or malformed.\n");
+			return 0;
+	}
+	
 
 	remove_newline_windows_weirdness(states);
 	remove_newline_windows_weirdness(alphabet);

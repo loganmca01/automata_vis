@@ -10,7 +10,6 @@
 int parse_fa_states(struct dfa *dfa, char *state_list) {
     char *copy = strdup(state_list);
     //add check if copy fails?
-
     int count = 1; 
     if (!copy[0]) {
         free(copy);
@@ -81,7 +80,7 @@ int parse_fa_alphabet(struct dfa *dfa, char *alphabet_list, unsigned char *symbo
         }
         for (int j = 0; j < i; j++) { //replace with hashmap
             if (dfa->alphabet[j] == token[0]) {
-                fprintf(stderr, "Duplicate input symbol %c\n", token);
+                fprintf(stderr, "Duplicate input symbol %s\n", token);
                 free(copy);
                 free(dfa->alphabet);
                 return -1;
