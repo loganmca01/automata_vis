@@ -9,7 +9,7 @@ while read -r dfafile input result; do
 	
 	printf "test %d: " "$i"
 	
-	out=$(../automata "../$dfafile" "$input" "0" | tr -d '\r\n' | xargs)
+	out=$(./automata "./$dfafile" "$input" "0" | tr -d '\r\n' | xargs)
 	
 	#helps to fix file locating errors
 	#echo "DEBUG: dfafile='$dfafile' input='$input' result='$result'"
