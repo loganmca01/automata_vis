@@ -1,0 +1,40 @@
+s0,s1,s2,s3
+a,b,c
+s0,a,s1;s0,b,s0;s0,c,s0;s1,a,s1;s1,b,s2;s1,c,s0;s2,a,s1;s2,b,s0;s2,c,s3;s3,a,s3;s3,b,s3;s3,c,s3
+s0
+s3
+0,1
+s0,0,s0;s0,1,s1;s1,0,s2;s1,1,s0;s2,0,s1;s2,1,s2
+s0
+s0s0,s1
+0,1
+s0,0,s0;s0,1,s1;s1,0,s0;s1,1,s1
+s0
+s1s0,s1,s2
+0,1
+s0,0,s0;s0,1,s1;s1,0,s2;s1,1,s0;s2,0,s1;s2,1,s2
+s0
+s00.00,0.25,0.50,0.75,1.00,1.25,enough,purchase
+q,d,s
+0.00,q,0.25;0.00,d,1.00;0.00,s,0.00;0.25,q,0.50;0.25,d,1.25;0.25,s,0.25;0.50,q,0.75;0.50,d,enough;0.50,s,0.50;0.75,q,1.00;0.75,d,enough;0.75,s,0.75;1.00,q,1.25;1.00,d,enough;1.00,s,1.00;1.25,q,enough;1.25,d,enough;1.25,s,1.25;enough,q,enough;enough,d,enough;enough,s,purchase;purchase,q,purchase;purchase,d,purchase;purchase,s,purchase
+0.00
+purchase./test_automata/test_dfa/abc.dfa aabbccacab denied
+./test_automata/test_dfa/abc.dfa aabbccacabc accepted
+./test_automata/test_dfa/abc.dfa abc accepted
+./test_automata/test_dfa/abc.dfa ac denied
+./test_automata/test_dfa/abc.dfa abbbbbbbbbbbcbabc accepted
+./test_automata/test_dfa/odd.dfa 0 denied
+./test_automata/test_dfa/odd.dfa 1 accepted
+./test_automata/test_dfa/odd.dfa 000010 denied
+./test_automata/test_dfa/odd.dfa 011111111101 accepted
+./test_automata/test_dfa/odd.dfa 0111111111010111010 denied
+./test_automata/test_dfa/three_mult.dfa 0 accepted
+./test_automata/test_dfa/three_mult.dfa 11 accepted
+./test_automata/test_dfa/three_mult.dfa 11000 accepted
+./test_automata/test_dfa/three_mult.dfa 11101 denied
+./test_automata/test_dfa/three_mult.dfa 11111111111 denied
+./test_automata/test_dfa/vending_machine.dfa qqds accepted
+./test_automata/test_dfa/vending_machine.dfa qds denied
+./test_automata/test_dfa/vending_machine.dfa dds accepted
+./test_automata/test_dfa/vending_machine.dfa ssssdsdddq denied
+./test_automata/test_dfa/vending_machine.dfa sqqqqqqqqs accepted

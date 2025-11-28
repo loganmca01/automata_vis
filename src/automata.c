@@ -12,6 +12,7 @@ void remove_newline_windows_weirdness(char *str);
 
 int main(int argc, char **argv) {
 	
+	/*
 	if (argc != 4) {
 		printf("error, need cmd line arg file name\n");
 		exit(1);
@@ -70,6 +71,70 @@ int main(int argc, char **argv) {
 	if (argv[3][0] == '1') {
 		print_dfa_log();
 	}
+	
+	free_dfa_mem(&converted_input);
+
+	free(states);
+	free(alphabet);
+	free(transitions);
+	free(start);
+	free(end);
+	
+	*/
+	
+	printf("test\n");
+	
+	FILE *f = fopen("./test_automata/test_dfa/abc.dfa", "r");
+	if (f == 0) {
+		printf("error opening file\n");
+		exit(1);
+	}
+	
+	char *states = NULL;
+	char *alphabet = NULL;
+	char *transitions = NULL;
+	char *start = NULL;
+	char *end = NULL;
+	size_t len = 64;
+
+	if (getline(&states, &len, f) == -1 ||
+		getline(&alphabet, &len, f) == -1 ||
+		getline(&transitions, &len, f) == -1 ||
+		getline(&start, &len, f) == -1 ||
+		getline(&end, &len, f) == -1) {
+			fprintf(stderr, "Error: file missing lines or malformed.\n");
+			return 0;
+	}
+	
+
+	remove_newline_windows_weirdness(states);
+	remove_newline_windows_weirdness(alphabet);
+	remove_newline_windows_weirdness(transitions);
+	remove_newline_windows_weirdness(start);
+	remove_newline_windows_weirdness(end);
+
+	if (create_dfa(states, alphabet, transitions, start, end) == -1) {
+		printf("creation error\n");
+		exit(1);
+	}
+	
+	char *converted_input;
+	char *in = "ababbbcabc";
+	initialize_dfa_sequence(in, &converted_input);
+
+	int status;
+
+	while((status = progress_dfa_sequence(converted_input)) == 0) {
+		continue;
+	}
+	if (status == 1) {
+		printf("denied\n");
+	}
+	else if (status == 2) {
+		printf("accepted\n");
+	}
+	
+	print_dfa_log();
 	
 	free_dfa_mem(&converted_input);
 
