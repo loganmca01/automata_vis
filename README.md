@@ -17,8 +17,8 @@ In order to maximize efficiency, we chose to implement the backend for this proj
   - C files for automata backend and a bash script for running tests
  
 /test_automata
-  |-- /test_dfa -- test .dfa files for various dfa's
-  |-- /test_input -- input files for running simple tests with script, require which dfa is being tested, input string for that dfa, and expected result
+  - test_dfa -- test .dfa files for various dfa's
+  - test_input -- input files for running simple tests with script, require which dfa is being tested, input string for that dfa, and expected result
   
   - more tests will be added when other automata fully implemented
   
